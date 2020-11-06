@@ -1,0 +1,13 @@
+#include <iostream>
+using namespace std;
+
+int sum(int x[], int len);
+
+
+int main(){
+  int x[] = {4, 3, 9};
+  cout << sum(x, 3);
+  
+  
+
+}

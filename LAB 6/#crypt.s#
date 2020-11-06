@@ -1,0 +1,51 @@
+mov 	.global _z8checksumPLc
+	.global _Z5cryptPcjc
+
+_Z8checksumPKc:
+	push {r4, r5}
+	mov r4, #0    	@cntr
+	mov r3, #0    	@bitsum holder
+1:	
+	@loop to sum bits of input array
+	ldrb r2, [r0]  		@load register with bits of array position 'i'
+	add  r3, r2		@summing bits to register r3
+	cmp  r2, #0		@comparing counter and size of array
+	bgt  1b			@continue if r2 has digits
+
+	mov  r4, #0
+	ldr r5, 0x100 		@loading hex 256 into r5
+2:
+	sub r3, r3, r5 		@subtract 256 from summed bits
+	cmp r3, r4		@compare r3 to r0
+	blt 2b			@continue if r3 > 0
+
+	mov r0, r3
+	bx lr
+	
+
+	
+
+_Z5cryptPcjc:
+
+	@r0 - array adress
+	@r1 - length of array
+	@r2 - encryption key
+	@r3 - bit holder
+	@r4 - cntr
+
+	
+        push    {r4,r5}
+        mov     r4, #0
+
+1:
+        ldrb    r3, [r0]
+        eor     r3, r2
+        strd    r3, [r0]
+	cmp 	43, r1
+        add     r4, #1
+        add     r0, #1
+        cmp     r2, r4
+        ble     1b
+
+        pop     {r4,r5}
+        bx      lr
